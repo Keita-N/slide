@@ -11,7 +11,7 @@ Scala
 
 シンタックスから見るScala vs Java
 ------
-* 変数定義
+## 変数定義
 
 ```java
 // Java
@@ -26,7 +26,7 @@ var j = 3;
 j = 4 // 代入可能
 ```
 
-* メソッド定義
+## メソッド定義
 ```java
 // Java
 public Sting toString(String name, int age) {
@@ -43,7 +43,7 @@ def toString(name: String, age: Int) =
 -- 戻り型は型推論により省略可能
 -- s"$i ..."は文字列内で式を展開
 
-* List
+## List
 ```java
 // Java
 List<String> list = new ArrayList<String>();
@@ -64,7 +64,7 @@ Scalaのリストのデータ構造
 -- 長さ０のリスト List()
 -- 先頭の要素(head) と残りのリスト(tail)
 
-* パターンマッチ構文
+## パターンマッチ構文
 ```scala
 val list = List(1,2,3,4)
 list match {
@@ -73,7 +73,7 @@ list match {
 }
 ```
 
-* first-class object(第一級オブジェクト）として扱える関数
+## first-class object(第一級オブジェクト）として扱える関数
 - 関数の戻り値となる
 - 関数の引数となる
 - 変数に格納できる
@@ -88,8 +88,8 @@ def addN(n: Int) = {
 List(1,2,3,4).filter(_ % 2 == 0) // List(2,4)
 ```
 
-* コレクションクラスの便利なメソッド
-** map （写像関数）
+## コレクションクラスの便利なメソッド
+### map （写像関数）
 コレクションの各要素に関数を適用する
 ```scala
 // Scala
@@ -106,7 +106,7 @@ for (int i : list) {
     result.add(i * 2)
 }
 ```
-** filter 条件に合致する要素を抽出
+### filter 条件に合致する要素を抽出
 ```scala
 val list = List(1,2,3,4)
 list.filter(_ > 2)
@@ -120,5 +120,35 @@ for (int i : list) {
     }
 }
 ```
+
+### fold関数　畳み込み関数
+```scala
+val list = List(1,2,3,4,5)
+list.foldLeft(0)(_ + _) // 10
+list.foldLeft(0)((acc, i) => acc + i) // 冗長に書いた場合（型は省略）
+```
+```java
+List<Int> list = ..... // 省略
+int result = 0;
+for (int i : list) {
+  result = result + i;
+}
+```
+
+foldLeft関数をスタンドアロンに実装してみると。。。
+```
+@annotation.tailrec
+def foldLeft[A,B](list: List[A])(z: B)(f: (B, A) => B): B = list match {
+  case List() => z
+  case h :: t => foldLeft(t)(f(z, h))(f)
+}
+
+def foldRight[A,B](list: List[A](z: B)(f: (A, B) => B): B = list match {
+  case List() => z
+  case h ::t => f(h, foldRight(t)(z)(f))
+}
+```
+foldLeftのような再帰関数を特に末尾再帰関数(tail-recursive)と呼ぶ。
+末尾再帰関数はコンパイル後は　while文に展開されるためスタックを消費しない。
 
 
