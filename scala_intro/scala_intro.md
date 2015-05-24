@@ -43,3 +43,82 @@ def toString(name: String, age: Int) =
 - 戻り型は型推論により省略可能
 - s"$i ..."は文字列内で式を展開
 
+* List
+```java
+// Java
+List<String> list = new ArrayList<String>();
+list.add("Alice");
+list.add("Bob");
+list.add("Cecil");
+```
+```scala
+// Scala
+val list = List("Alice", "Bob", "Cecil")　// immutable
+list.head // "Alice"
+list.tail // List("Bob", "Cecil")
+
+val list2 = "Dan" :: list // List("Dan", "Alice", "Bob", "Cecil")
+val nil = List() // 要素０のリスト
+```
+Scalaのリストのデータ構造
+-- 長さ０のリスト List()
+-- 先頭の要素(head) と残りのリスト(tail)
+
+* パターンマッチ構文
+```scala
+val list = List(1,2,3,4)
+list match {
+    case Nil => "empty list"
+    case h :: t => s"head: $h, tail: $t"
+}
+```
+
+* first-class object(第一級オブジェクト）として扱える関数
+- 関数の戻り値となる
+- 関数の引数となる
+- 変数に格納できる
+- 無名のリテラルとして表現可能
+```scala
+val add = (i: Int) => i + 1
+
+def addN(n: Int) = {
+    (i: Int) => i + n
+}
+
+List(1,2,3,4).filter(_ % 2 == 0) // List(2,4)
+```
+
+* コレクションクラスの便利なメソッド
+** map （写像関数）
+コレクションの各要素に関数を適用する
+```scala
+// Scala
+val list = List(1,2,3,4,5);
+list.map(i => i * 2) // List(2,4,6,7,10)
+
+list.map(_ * 2) //　プレースホルダーにより簡略に記述
+```
+```java
+// Java
+List<Int> list = ..... // 省略
+List<Integer> result = new ArrayList<Integer>();
+for (int i : list) {
+    result.add(i * 2)
+}
+```
+** filter 条件に合致する要素を抽出
+```scala
+val list = List(1,2,3,4)
+list.filter(_ > 2)
+```
+```java
+List<Int> list = ..... // 省略
+List<Integer> result = new ArrayList<Integer>();
+for (int i : list) {
+    if (i > 2) {
+      result.add(i * 2);
+    }
+}
+```
+
+
