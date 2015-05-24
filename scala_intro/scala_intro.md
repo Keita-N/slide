@@ -9,7 +9,7 @@ Scala
 * 一般化
 * テスト容易性
 
-シンタックスから見るScala vs Java
+Scala vs Java
 ------
 ## 変数定義
 
@@ -62,7 +62,7 @@ val nil = List() // 要素０のリスト
 ```
 Scalaのリストのデータ構造
   - 長さ０のリスト List()
-  - 先頭の要素(head) と残りのリスト(tail)
+  - 先頭の要素(head) と残りの要素のリスト(tail)で構成されるリスト
 
 ## パターンマッチ構文
 ```scala
@@ -159,9 +159,43 @@ def foldRight[A,B](list: List[A](z: B)(f: (A, B) => B): B = list match {
   case h ::t => f(h, foldRight(t)(z)(f))
 }
 ```
-foldLeftのような再帰関数を特に末尾再帰関数(tail-recursive)と呼ぶ。
+foldLeftのような構造の再帰関数を特に末尾再帰関数(tail-recursive)と呼ぶ。
 末尾再帰関数はコンパイル後は　while文に展開されるためスタックを消費しない。
 
 # case クラス
+```scala
+case class Person(name: String, age: Int) // これだけ！
 
+val tom = Person("Tom", 10) // immutable
+// getter
+tom.name // Tom
+tom.age // 10
+// オブジェクトの状態の変更は不可
+// tom.name = "Bob" // error!
+// パターンマッチによる値の取り出し
+tom match {
+  case Person(name, age) => s"$name is $age years old" // Tom is 10 years old!
+}
+
+// if も利用可能
+tom match {
+  case Person(_, age) if age < 20 => "Young"
+  case _ => "Adult"
+}
+```
+
+``java
+class Person {
+  private String name;
+  private int age;
+  
+  // getter, setter は省略
+}
+
+Person tom = new Person();
+tom.setName("Tome");
+tom.setAge(10);
+
+// 状態の変更が可能なミュータブルなオブジェクト
+```
 
