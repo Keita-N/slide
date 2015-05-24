@@ -71,6 +71,15 @@ list match {
     case Nil => "empty list"
     case h :: t => s"head: $h, tail: $t"
 }
+
+List(100) match {
+  case List(x) => x
+}
+
+List(1,2,3,4,5) match {
+  case x :: y :: t => y // 2
+  case _ => -1
+}
 ```
 
 ## first-class object(第一級オブジェクト）として扱える関数
@@ -100,19 +109,20 @@ list.map(_ * 2) //　プレースホルダーにより簡略に記述
 ```
 ```java
 // Java
-List<Int> list = ..... // 省略
+List<Integer> list = ..... // 省略
 List<Integer> result = new ArrayList<Integer>();
 for (int i : list) {
     result.add(i * 2)
 }
 ```
-### filter 条件に合致する要素を抽出
+### filter
+条件に合致する要素を抽出
 ```scala
 val list = List(1,2,3,4)
 list.filter(_ > 2)
 ```
 ```java
-List<Int> list = ..... // 省略
+List<Integer> list = ..... // 省略
 List<Integer> result = new ArrayList<Integer>();
 for (int i : list) {
     if (i > 2) {
@@ -121,14 +131,15 @@ for (int i : list) {
 }
 ```
 
-### fold関数　畳み込み関数
+### fold関数
+畳み込み関数
 ```scala
 val list = List(1,2,3,4,5)
 list.foldLeft(0)(_ + _) // 10
 list.foldLeft(0)((acc, i) => acc + i) // 冗長に書いた場合（型は省略）
 ```
 ```java
-List<Int> list = ..... // 省略
+List<Integer> list = ..... // 省略
 int result = 0;
 for (int i : list) {
   result = result + i;
@@ -136,7 +147,7 @@ for (int i : list) {
 ```
 
 foldLeft関数をスタンドアロンに実装してみると。。。
-```
+```scala
 @annotation.tailrec
 def foldLeft[A,B](list: List[A])(z: B)(f: (B, A) => B): B = list match {
   case List() => z
@@ -150,5 +161,7 @@ def foldRight[A,B](list: List[A](z: B)(f: (A, B) => B): B = list match {
 ```
 foldLeftのような再帰関数を特に末尾再帰関数(tail-recursive)と呼ぶ。
 末尾再帰関数はコンパイル後は　while文に展開されるためスタックを消費しない。
+
+# case クラス
 
 
