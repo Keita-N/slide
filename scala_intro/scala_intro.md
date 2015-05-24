@@ -37,11 +37,11 @@ public Sting toString(String name, int age) {
 def toString(name: String, age: Int) =
   s"$name is $age years old."
 ```
--- return は基本的に書かない。最後に評価された値が戻り値。
--- 一行で書ける場合は、{} 不要
--- 関数はFunction traitを継承した一級オブジェクト（後述）
--- 戻り型は型推論により省略可能
--- s"$i ..."は文字列内で式を展開
+　　- return は基本的に書かない。最後に評価された値が戻り値。
+　　- 一行で書ける場合は、{} 不要
+　　- 関数はFunction traitを継承した一級オブジェクト（後述）
+　　- 戻り型は型推論により省略可能
+　　- s"$i ..."は文字列内で式を展開
 
 ## List
 ```java
