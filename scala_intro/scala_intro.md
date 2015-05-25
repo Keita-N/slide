@@ -200,3 +200,7 @@ tom.setAge(10);
 // 状態の変更が可能なミュータブルなオブジェクト
 ```
 
+## Map
+## Option
+## for comprehension
+## Stream
