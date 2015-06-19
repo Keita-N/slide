@@ -201,6 +201,57 @@ tom.setAge(10);
 ```
 
 ## Map
+```scala
+// Scala
+val map = Map("Sun" -> 0, "Mon" -> 1, "Tue" -> 2, "Wed" -> 3, "Thur" -> 4, "Fri" -> 5, "Sat" -> 6)
+
+map("Mon") // 1
+map("Non") // java.util.NoSuchElementException: key not found: Non
+
+// 型安全な値の取り出し
+map.get("Mon") // Some(1)
+map.get("Non") // None
+map.getOrElse("Mon", -1) // 1
+map.getOrElse("Non", -1) // -1 
+```
+Option型で戻るのでnullチェックが型レベルで強制される。
+
 ## Option
+戻り値がnullになる可能性があることを型レベルで明示できる。
+```scala
+// Optionの抽象クラス。持つかもしれない値の型をパラメータでもつ
+sealed abstract class Option[+A] extends Product
+
+// Someは、Optionを継承して値がある場合を表現する。
+// コンストラクタに実際の値をとる
+final case class Some[+A](x: A) extends Option[A]
+
+// Noneは、値がない場合を表す。Optionの型パラメータは共変なので
+// Option[Nothing]は全てのOption[A]型のサブタイプになる。なのでシングルトン。
+case object None extends Option[Nothing]
+```
+seald指定されたクラスのついては、パターンマッチに網羅性チェックがかかる。
+
+```scala
+def get[A](o: Option[A]) = o match {
+  case Some(a) => a
+  case None => "No value"
+}
+```
+
 ## for comprehension
+map, filter, flatMapのシンタックスシュガー
+```scala
+val list1 = List(1,2,3,4,5)
+val list2 = List("a", "b", "c", "d", "e")
+
+list1.filter(i => i % 2 == 0).flatMap(i => list2.map(j => (i, j)))
+
+for {
+  i <- list1 if i % 2 == 0
+  j <- list2
+} yield (i, j)
+// List[(Int, String)] = List((2,a), (2,b), (2,c), (2,d), (2,e), (4,a), (4,b), (4,c), (4,d), (4,e))
+```
+
 ## Stream
