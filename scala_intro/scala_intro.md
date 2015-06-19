@@ -30,7 +30,7 @@ j = 4 // 代入可能
 ```java
 // Java
 public Sting toString(String name, int age) {
-  return "name" + " is " + age + "years old.";
+  return name + " is " + age + "years old.";
 }
 ```
 ```scala
