@@ -23,9 +23,9 @@ A function f is pure
 if f(x) is RT when x is RT.
 ```
 ## 関数型プログラミングのメリット
-隠れた依存関係がない
-初期化、クリーンアップがない　可変の状態を使わない
-意図しない副作用がない
+- 隠れた依存関係がない
+- 初期化、クリーンアップがない　可変の状態を使わない
+- 意図しない副作用がない
 
 Modularity
 ### Reusable
@@ -38,7 +38,7 @@ def sum(xs: List[Int]): Int = xs match {
 
 def product(xs: List[Int]): Int = xs match {
  case Nil => 1
- case h :: t => h * sum(t)
+ case h :: t => h * product(t)
 }
 ```
 
