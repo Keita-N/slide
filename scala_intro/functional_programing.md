@@ -4,9 +4,9 @@
 - 同じ引数に対して常に同じ値がかえってくる
 - プログラム中のコンテクストに依存しない
 - 副作用(side effect)を生じない
+  (参考)[What Purity Is and Isn’t](http://blog.higher-order.com/blog/2012/09/13/what-purity-is-and-isnt/)
 
-
-- 参照透過性 referential transparency
+### 参照透過性 referential transparency
 ```
 式e があり、すべてのプログラムpにおいて、pの意味に影響を与えることなく、
 p内のすべてのeをeの評価結果で置き換えることができるとしたら、eは参照透過である。
@@ -29,6 +29,36 @@ if f(x) is RT when x is RT.
 
 Modularity
 ### Reusable
+
+```scala
+def sum(xs: List[Int]): Int = xs match {
+ case Nil => 0
+ case h :: t => h + sum(t)
+}
+
+def product(xs: List[Int]): Int = xs match {
+ case Nil => 1
+ case h :: t => h * sum(t)
+}
+```
+
+```scala
+def foldRight[A, B](xs: List[A])(z: B)(f: (A, B) => B): B = xs match {
+ case Nil => z
+ case h :: t => f(h, foldRight(t))
+}
+
+def sum(xs: List[Int]) = foldRight(xs)(0)(_ + _)
+
+def product(xs: List[Int]) = foldRight(xs)(1)(_ * _)
+
+def all(xs: List[Boolean) = foldRight(xs)(true)(_ && _)
+
+def any(xs: List[Boolean]) = foldRight(xs)(false)(_ || _)
+
+def concat(xs: List[String]) = foldRight(xs)("")(_ + _)
+```
+
 ### Testable
 関数の評価結果がコンテクストに依存しないためテストがしやすい
 ### Parallelizable
@@ -47,35 +77,6 @@ ex)HTMLパーサー String => HTML
 
 ### Comprehensible
 副作用がなく、宣言的な定義ができるので形式的に証明しやすい
-
-```scala
-def sum(xs: List[Int]): Int = xs match {
-    case Nil => 0
-    case h :: t => h + sum(t)
-}
-
-def product(xs: List[Int]): Int = xs match {
-    case Nil => 1
-    case h :: t => h * sum(t)
-}
-```
-
-```scala
-def foldRight[A, B](xs: List[A])(z: B)(f: (A, B) => B): B = xs match {
-    case Nil => z
-    case h :: t => f(h, foldRight(t))
-}
-
-def sum(xs: List[Int]) = foldRight(xs)(0)(_ + _)
-
-def product(xs: List[Int]) = foldRight(xs)(1)(_ * _)
-
-def all(xs: List[Boolean) = foldRight(xs)(true)(_ && _)
-
-def any(xs: List[Boolean]) = foldRight(xs)(false)(_ || _)
-
-def concat(xs: List[String]) = foldRight(xs)("")(_ + _)
-```
 
 ## FP => Happiness
 詳細は、以下の動画で。
